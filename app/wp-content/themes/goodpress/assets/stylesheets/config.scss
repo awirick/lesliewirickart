@@ -1,0 +1,207 @@
+$defaultConfig: (
+	button: (
+		include: true,
+		theme: (
+			prototype: true
+		)
+	),
+	card: (
+		include: true,
+		theme: (
+			prototype: true
+		)
+	),
+	checkbox: (
+		include: true,
+		theme: (
+			prototype: true
+		)
+	),
+	divider: (
+		include: true,
+		theme: (
+			prototype: true
+		)
+	),
+	icons: (
+		include: true,
+		theme: (
+			prototype: true
+		)
+	),
+	image: (
+		include: true,
+		theme: (
+			prototype: true
+		)
+	),
+	input: (
+		include: true,
+		theme: (
+			prototype: true
+		)
+	),
+	label: (
+		include: true,
+		theme: (
+			prototype: true
+		)
+	),
+	segment: (
+		include: true,
+		theme: (
+			prototype: true
+		)
+	),
+	dropdown: (
+		include: true,
+		theme: (
+			prototype: true
+		)
+	),
+	form: (
+		include: true,
+		theme: (
+			prototype: true
+		)
+	),
+	menu: (
+		include: true,
+		theme: (
+			prototype: true,
+			leslietheme: true
+		)
+	),
+	message: (
+		include: true,
+		theme: (
+			prototype: true
+		)
+	),
+	popup: (
+		include: true,
+		theme: (
+			prototype: true
+		)
+	),
+	sidebar: (
+		include: true,
+		theme: (
+			prototype: true
+		)
+	),
+	table: (
+		include: true,
+		theme: (
+			prototype: true
+		)
+	),
+	mediaquery: (
+		palm: (
+			include: true,
+			widths: true,
+			layout: true
+		),
+		lap: (
+			include: true,
+			widths: true,
+			layout: true
+		),
+		lap-and-up: (
+			include: true,
+			widths: true,
+			layout: true
+		),
+		portable: (
+			include: true,
+			widths: true,
+			layout: true
+		),
+		desk: (
+			include: true,
+			widths: true,
+			layout: true
+		),
+		desk-wide: (
+			include: false,
+			widths: true,
+			layout: true
+		),
+		under-desk-wide: (
+			include: true,
+			widths: true,
+			layout: true
+		)
+	),
+	abstractions: (
+		list: (
+			include: true
+		),
+		grid: (
+			include: true
+		),
+		media: (
+			include: true
+		)
+	),
+	base: (
+		font-size: 16px,
+		line-height: 24px,
+		giga-size: 64px,
+		mega-size: 48px,
+		kilo-size: 36px,
+		h1-size: 32px,
+		h2-size: 28px,
+		h3-size: 24px,
+		h4-size: 18px,
+		h5-size: 16px,
+		h6-size: 14px,
+		milli-size: 12px,
+		micro-size: 10px,
+		round: 3px,
+		grid-gutter: 20px,
+		page-gutter: 2000px,
+		lap-start: 600px,
+		desk-start: 900px,
+		desk-wide-start: 1200px
+	),
+	layout: (
+		normalize: (
+			include: true
+		),
+		type: (
+			include: true
+		),
+		display: (
+			include: true,
+			spacing: true,
+			widths: true,
+			silent: true,
+			fractions: true
+		),
+		flexbox: (
+			include: true
+		)
+	),
+	iconset: (
+		theme: (
+			prototype: true
+		)
+	),
+	font: (
+		theme: (
+			prototype: true
+		)
+	),
+	gutter: (
+		include: true,
+		theme: (
+			leslietheme: true
+		)
+	),
+	grid: (
+		theme: (
+			leslietheme: true
+		)
+	)
+);

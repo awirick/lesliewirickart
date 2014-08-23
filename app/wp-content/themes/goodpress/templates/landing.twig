@@ -1,0 +1,14 @@
+{% extends "base.twig" %}
+
+{% block main %}
+<div class="ui wide gutter ph++">
+  <div class="ui grid">
+    <div class="eleven wide column">
+      <img src="http://www.loveonwall.com/fmm_uploads/23779-abstract-art.jpg" alt="leslie wirick abstract art photo" />
+    </div>
+    <div class="five wide column">
+      {{ post.get_field('landing_blurb') }}
+    </div>
+  </div>
+</div>
+{% endblock %}

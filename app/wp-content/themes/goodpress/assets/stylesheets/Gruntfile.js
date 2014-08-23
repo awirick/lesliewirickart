@@ -3,13 +3,17 @@ module.exports = function (grunt) {
   'use strict';
 
   var globalConfig = {
-    src: 'src',
-    style: 'style',
-    styleguide: 'styleguide',
-    docs: 'styleguide/docs',
+    docs: 'node_modules/bagel-core/docs',
+    mockups: 'mockups',
+    protoguide: 'node_modules/bagel-core/guide',
+    prototype: 'node_modules/bagel-core/chrome',
+    styleguide: 'guide',
+    src: 'node_modules/bagel-core/src',
+    style: 'chrome',
     dist: {
-      root: ' css',
+      root: 'css',
       docs: 'css/docs',
+      mockups: 'css/mockups',
       style: 'css'
     }
   };
@@ -23,13 +27,20 @@ module.exports = function (grunt) {
           assets: '<%= globalConfig.docs  %>/assets',
           flatten: false,
           partials: ['<%= globalConfig.docs  %>/partials/*.hbs'],
-          layout: '<%= globalConfig.docs  %>/layouts/default.hbs',
-          data: ['<%= globalConfig.docs  %>/data/*.{json,yml}','config.{json,yml}']
+          layout: 'default.hbs',
+          layoutdir: '<%= globalConfig.docs  %>/layouts/',
+          data: ['<%= globalConfig.docs  %>/data/*.{json,yml}']
         },
         files: [{
           expand: true,
-          cwd: '<%= globalConfig.style  %>',
+          cwd: '.tmp/docs',
           src: ['**/*.hbs'],
+          dest: '<%= globalConfig.dist.docs  %>'
+        },
+        {
+          expand: true,
+          src: ['node_modules/bagel-core/**/node_modules/bagel-*/guide/**/*.hbs'],
+          flatten: true,
           dest: '<%= globalConfig.dist.docs  %>'
         }]
       }
@@ -37,36 +48,28 @@ module.exports = function (grunt) {
     shared_config: {
       style: {
         options: {
-          name: "globalConfig",
+          name: "defaultConfig",
           cssFormat: "dash",
           useSassMaps: true
         },
-        src: "<%= globalConfig.style  %>/config.yml",
+        src: ['node_modules/**/bagel-*/config.yml', 'node_modules/bagel-*/config.yml', 'config.yml'], // order matters,
         dest: [
-          "<%= globalConfig.style  %>/config.scss"
-        ]
-      },
-      styleguide: {
-        options: {
-          name: "styleguideConfig",
-          cssFormat: "dash",
-          useSassMaps: true
-        },
-        src: "styleguide/styleguide.yml",
-        dest: [
-          "styleguide/config.scss"
+          "config.scss"
         ]
       }
     },
     sass: {
+      options: {
+        loadPath: ['./', 'node_modules/']
+      },
       dist: {
         files : {
-          '<%= globalConfig.dist.style  %>/style.css': '<%= globalConfig.style  %>/style.scss'
+          '<%= globalConfig.dist.style  %>/style.css': 'init.scss'
         }
       },
       styleguide: {
         files : {
-          '<%= globalConfig.dist.docs  %>/stylesheets/styleguide.css': '<%= globalConfig.styleguide  %>/styleguide.scss'
+          '<%= globalConfig.dist.docs  %>/stylesheets/styleguide.css': '<%= globalConfig.styleguide  %>/guide.scss'
         }
       },
     },
@@ -75,19 +78,24 @@ module.exports = function (grunt) {
         sourcemap: true
       },
       dist: {
-        files: {
-          '<%= globalConfig.dist.style  %>/style.css': '<%= globalConfig.dist.style  %>/style.css'
-        }
-      },
-      styleguide: {
-        files: {
-          '<%= globalConfig.dist.docs  %>/stylesheets/styleguide.css': '<%= globalConfig.dist.docs  %>/stylesheets/styleguide.css'
-        }
+        files: [
+          {
+            expand: true,
+            cwd: '<%= globalConfig.dist.style  %>/',
+            src: ['*.css', '**/*.css'],
+            dest: '<%= globalConfig.dist.style  %>/'
+          }
+        ]
       },
       docs: {
-        files: {
-          '<%= globalConfig.dist.docs  %>/stylesheets/docs.css': '<%= globalConfig.dist.docs  %>/stylesheets/docs.css'
-        }
+        files: [
+          {
+            expand: true,
+            cwd: '<%= globalConfig.dist.docs  %>/',
+            src: ['**/*.css'],
+            dest: '<%= globalConfig.dist.docs  %>/'
+          }
+        ]
       }
     },
     clean: {
@@ -106,6 +114,12 @@ module.exports = function (grunt) {
           src: ['<%= globalConfig.dist.docs  %>/*']
         }
         ]
+      },
+      tempdocs: {
+        files : [{
+          dot: true,
+          src: ['.tmp/docs*']
+        }]
       }
     },
     copy: {
@@ -123,7 +137,8 @@ module.exports = function (grunt) {
           cwd: '<%= globalConfig.src  %>/assets',
           src: ['**/*'],
           dest: '<%= globalConfig.dist.style  %>/assets/'
-        }]
+        }
+        ]
       },
       docs: {
         files: [
@@ -131,26 +146,29 @@ module.exports = function (grunt) {
           expand: true,
           cwd: '<%= globalConfig.docs  %>/assets/',
           src: ['images/*', 'javascripts/**/*.js', 'stylesheets/*.css'],
-          dest: '<%= globalConfig.dist.docs  %>/assets/'
-        },
-        {
-          expand: true,
-          cwd: '<%= globalConfig.docs  %>/assets/',
-          src: ['stylesheets/*.css'],
-          dest: '<%= globalConfig.dist.docs  %>/'
-        },
-        {
-          expand: true,
-          cwd: '<%= globalConfig.src  %>/assets/',
-          src: ['images/*', 'icons/*'],
-          dest: '<%= globalConfig.dist.docs  %>/assets/'
+          dest: '<%= globalConfig.dist.docs  %>'
         }
         ]
+      },
+      tempdocs: {
+        files: [
+        {
+          expand: true,
+          cwd: '<%= globalConfig.protoguide  %>',
+          src: ['**/*.hbs'],
+          dest: '.tmp/docs'
+        },
+        {
+          expand: true,
+          cwd: '<%= globalConfig.styleguide  %>',
+          src: ['**/*.hbs'],
+          dest: '.tmp/docs'
+        }]
       }
     },
     watch: {
       hbs: {
-        files: ['**/*.hbs'],
+        files: ['<%= globalConfig.docs  %>/**/*.hbs'],
         tasks: ['assemble:docs']
       },
       docs: {
@@ -173,9 +191,9 @@ module.exports = function (grunt) {
     cssmin: {
       minify: {
         expand: true,
-        cwd: '<%= globalConfig.dist.style  %>/',
+        cwd: '<%= globalConfig.dist.style  %>/stylesheets/',
         src: ['*.css', '!*.min.css'],
-        dest: '<%= globalConfig.dist.style  %>/',
+        dest: '<%= globalConfig.dist.style  %>/stylesheets/',
         ext: '.min.css'
       }
     }
@@ -184,11 +202,27 @@ module.exports = function (grunt) {
 require('load-grunt-tasks')(grunt);
 grunt.loadNpmTasks('assemble');
 
+grunt.registerTask('bagel:dirs',
+  'used to create an array of bagel paths for use in sass pathing',
+  function(){
+    var loadPaths = grunt.file.expand({}, [
+      './',
+      'chrome/',
+      'node_modules/',
+      'node_modules/bagel-*/node_modules/',
+      'node_modules/**/node_modules/bagel-*/node_modules/'
+    ]);
+    grunt.log.write(loadPaths.join(", "));
+    grunt.config.set('sass.options.loadPath', loadPaths);
+
+  });
+
+
 grunt.registerTask('default', ['build']);
-grunt.registerTask('distcss', ['shared_config:style', 'sass:dist', 'myth:dist']);
-grunt.registerTask('styleguidecss', ['shared_config:styleguide', 'sass:styleguide', 'myth:styleguide']);
-grunt.registerTask('docs', ['copy:docs', 'styleguidecss', 'assemble']);
+grunt.registerTask('distcss', ['sass:dist', 'myth:dist']);
+grunt.registerTask('doccss', ['sass:styleguide', 'myth:docs']);
+grunt.registerTask('docs', ['copy:tempdocs', 'doccss', 'assemble:docs', 'clean:tempdocs']);
 grunt.registerTask('dist', ['clean:dist', 'copy:dist', 'distcss', 'cssmin']);
-grunt.registerTask('build', ['clean', 'dist', 'docs']);
+grunt.registerTask('build', ['clean', 'shared_config', 'bagel:dirs', 'dist', 'clean:docs', 'copy:docs', 'doccss', 'docs']);
 
 };

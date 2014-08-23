@@ -1,0 +1,14 @@
+@mixin gutter-src {
+
+  .ui.gutter {
+    width: 100%;
+    max-width: 1260px;
+
+    &.wide {
+      max-width: 1440px;
+    }
+    &.thin {
+      max-width: 1020px;
+    }
+  }
+}

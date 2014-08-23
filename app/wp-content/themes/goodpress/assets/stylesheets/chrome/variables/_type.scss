@@ -1,0 +1,25 @@
+@import url(http://fonts.googleapis.com/css?family=Raleway:400,700);
+
+@mixin raleway {
+	font-family: "Raleway", sans-serif;
+	font-weight: 400;
+}
+
+@mixin ralewayBold {
+	font-family: "Raleway", sans-serif;
+	font-weight: 700;
+}
+
+@mixin neue {
+  font-family: "HelveticaNeue", "Helvetica Neue", "HelveticaNeueRoman", "HelveticaNeue-Roman", "Helvetica Neue Roman", 'TeXGyreHerosRegular', Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+* {
+  @include raleway;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+	color: palette(neutral, dark);
+}

@@ -16,3 +16,4 @@ app/wp-content/themes/goodpress/assets/stylesheets/.sass-cache
 app/wp-content/themes/goodpress/assets/stylesheets/node_modules
 app/wp-content/themes/goodpress/assets/stylesheets/css
 backups/
+.tmp/

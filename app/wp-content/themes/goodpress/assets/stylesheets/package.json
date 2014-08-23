@@ -1,7 +1,7 @@
 {
-  "name": "bagel",
-  "version": "0.1.1",
-  "title": "Bagel UI",
+  "name": "bagel-boilerplate",
+  "version": "0.1.3",
+  "title": "Bagel UI Boilerplate",
   "description": "Delicious UI Framework",
   "homepage": "http://goodtwin.co",
   "contributors": [
@@ -11,7 +11,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/goodtwin/bagel.git"
+    "url": "git://github.com/goodtwin/bagel-boilerplate.git"
+  },
+  "dependencies": {
+    "bagel-core": "git://github.com/goodtwin/bagel-core.git#v0.1.11"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
@@ -22,9 +25,9 @@
     "grunt-contrib-cssmin": "~0.9.0",
     "grunt-contrib-sass": "^0.7.3",
     "grunt-myth": "~0.1.1",
+    "grunt-shared-config": "~0.3.7",
+    "assemble": "~0.4.41",
     "bower": "~1.3",
-    "load-grunt-tasks": "~0.4.0",
-    "grunt-shared-config": "https://github.com/goodtwin/grunt-shared-config/archive/1f0a6e12b365ad9bda3e411f2a2cb74683df1d2e.tar.gz",
-    "assemble": "~0.4.41"
+    "load-grunt-tasks": "~0.4.0"
   }
 }
