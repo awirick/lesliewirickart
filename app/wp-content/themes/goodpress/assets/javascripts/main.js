@@ -1,8 +1,14 @@
 /* global define, $ */
-'use strict';
+$(function(){
+	$(document).on('click', '[href="#mainNav"]', function(evt){
+		evt.preventDefault();
+		$('body').toggleClass('pushed');
+	});
 
-define([
-	'src/navigation'
-	],
-	function(){
+	var gallery = new Masonry( '#gallery', {
+	});
+
+	imagesLoaded('#gallery', function(){
+		gallery.layout();
+	});
 });

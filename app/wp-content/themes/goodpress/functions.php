@@ -6,6 +6,10 @@ Timber::add_route('landing', function($params){
   wp_redirect(home_url());
 });
 
+Timber::add_route('gallery', function($params){
+  Timber::load_template('views/pages/gallery.php', $params);
+});
+
 /**
  * Pay No Attention To The Man Behind The Curtain.
  * Wordless setup and initialization.

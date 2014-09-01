@@ -100,37 +100,44 @@ $defaultConfig: (
 		palm: (
 			include: true,
 			widths: true,
-			layout: true
+			layout: true,
+			spacing: true
 		),
 		lap: (
 			include: true,
 			widths: true,
-			layout: true
+			layout: true,
+			spacing: true
 		),
 		lap-and-up: (
 			include: true,
 			widths: true,
-			layout: true
+			layout: true,
+			spacing: true
 		),
 		portable: (
 			include: true,
 			widths: true,
-			layout: true
+			layout: true,
+			spacing: true
 		),
 		desk: (
 			include: true,
 			widths: true,
-			layout: true
+			layout: true,
+			spacing: true
 		),
 		desk-wide: (
 			include: false,
 			widths: true,
-			layout: true
+			layout: true,
+			spacing: true
 		),
 		under-desk-wide: (
 			include: true,
 			widths: true,
-			layout: true
+			layout: true,
+			spacing: true
 		)
 	),
 	abstractions: (
@@ -163,7 +170,7 @@ $defaultConfig: (
 		page-gutter: 2000px,
 		lap-start: 600px,
 		desk-start: 900px,
-		desk-wide-start: 1200px
+		desk-wide-start: 1020px
 	),
 	layout: (
 		normalize: (

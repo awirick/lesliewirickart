@@ -4,7 +4,10 @@
 {% block head_extras %}
 {% endblock %}
 </head>
-<body>
+<body class="ui sidebar-containment right" fullbleed>
+  <div class="ui right vertical menu sidebar">
+    {% include 'partials/navigationmenu.twig' %}
+  </div>
   <header class="header">
 	{% include 'partials/navigation.twig' %}
 	</header>

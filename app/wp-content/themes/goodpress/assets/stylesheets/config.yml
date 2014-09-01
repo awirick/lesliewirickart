@@ -8,3 +8,5 @@ menu:
 grid:
   theme:
     leslietheme: true
+base:
+  desk-wide-start: 1020px

@@ -14,7 +14,8 @@
     "url": "git://github.com/goodtwin/bagel-boilerplate.git"
   },
   "dependencies": {
-    "bagel-core": "git://github.com/goodtwin/bagel-core.git#v0.1.11"
+    "bagel-core": "git://github.com/goodtwin/bagel-core.git#v0.1.11",
+    "bagel-layout": "git://github.com/goodtwin/bagel-layout.git#v0.1.7"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
