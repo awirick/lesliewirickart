@@ -1,7 +1,6 @@
-<div class="link item">Shop</div>
-<div class="link item">Gallery</div>
-<div class="link item">For Kids</div>
-<div class="link item">Contact</div>
+{% for item in menu.get_items %}
+  <a class="link item" href="{{item.get_link}}">{{item.title}}</a>
+{% endfor %}
 <a class="link icon item" href="" title="follow Leslie on instagram" clearfix>
   <i class="instagram icon"></i>Leslie on Instagram
 </a>

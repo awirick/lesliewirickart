@@ -7,7 +7,13 @@ Timber::add_route('landing', function($params){
 });
 
 Timber::add_route('gallery', function($params){
-  Timber::load_template('views/pages/gallery.php', $params);
+  $query = 'post_type=painting';
+  Timber::load_template('views/pages/gallery.php', $query);
+});
+
+Timber::add_route('galleries/:tag', function($params){
+  $query = 'post_type=painting&tag='.$params['tag'];
+  Timber::load_template('views/pages/gallery.php', $query);
 });
 
 /**

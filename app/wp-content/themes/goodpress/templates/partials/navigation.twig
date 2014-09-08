@@ -1,10 +1,9 @@
 <div class="ui text menu mv0 mh pv desk--mh+">
   <div class="header link item pt- mh-"><a href="/">leslie wirick</a></div>
   <div class="right menu visuallyhidden--portable">
-    <div class="link item">Shop</div>
-    <div class="link item">Gallery</div>
-    <div class="link item">For Kids</div>
-    <div class="link item">Contact</div>
+    {% for item in menu.get_items %}
+      <a class="link item" href="{{item.get_link}}">{{item.title}}</a>
+    {% endfor %}
     <a class="link icon item" href="" title="follow Leslie on instagram">
       <i class="instagram icon"></i>
     </a>
