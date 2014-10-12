@@ -6,6 +6,10 @@ Timber::add_route('landing', function($params){
   wp_redirect(home_url());
 });
 
+Timber::add_route('contact', function($params){
+  Timber::load_template('views/pages/contact.php', $params);
+});
+
 Timber::add_route('gallery', function($params){
   $query = 'post_type=painting';
   Timber::load_template('views/pages/gallery.php', $query);

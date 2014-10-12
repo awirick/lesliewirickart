@@ -1,0 +1,5 @@
+@import "lightbox";
+
+@if use(lightbox) {
+  @include lightbox-src;
+}

@@ -1,0 +1,56 @@
+{% extends "base.twig" %}
+
+{% block main %}
+<div class="ui wide gutter pv ph- desk-wide--ph+" clearfix>
+  <div class="1/1 desk-wide--5/8 ph+ under-desk-wide--pv palm--ph-" float-left>
+    <form action=""  method="POST" class="ui form {{status}}">
+      <div class="ui error message">
+        <div class="epsilon">{{error_message}}</div>
+      </div>
+      <div class="ui positive warning message">
+        <div class="epsilon">Message received! Expect to hear back from me soon.</div>
+      </div>
+      <div class="field">
+        <label>Name</label>
+        <div class="ui input">
+          <input type="text" placeholder="Name" name="message_name" value="{{message_name}}">
+          <div class="ui corner label pt--">
+            <i class="small icon asterisk"></i>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <div class="ui input">
+          <input type="text" placeholder="Email" name="message_email" value="{{message_email}}">
+          <div class="ui corner label pt--">
+            <i class="small icon asterisk"></i>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Message</label>
+        <div class="ui input">
+          <textarea name="message_text">{{message_text}}</textarea>
+          <div class="ui corner label pt--">
+            <i class="small icon asterisk"></i>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Human Check</label>
+        <div class="ui input 1/5" layout inline-block>
+          <input type="text" placeholder="Hint: its {{10 - message_seed}}"  name="message_human" value="{{message_human}}">
+          <div class="ui corner label pt--">
+            <i class="small icon asterisk"></i>
+          </div>
+        </div>
+        <div layout inline-block> + {{message_seed}} = 10</div>
+      </div>
+      <input type="hidden" name="message_seed" value="{{message_seed}}">
+      <input type="hidden" name="submitted" value="true">
+      <input type="submit" value="Contact Leslie" class="ui positive button"/>
+    </form>
+  </div>
+</div>
+{% endblock %}

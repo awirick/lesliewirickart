@@ -6,7 +6,7 @@ $defaultConfig: (
 		)
 	),
 	card: (
-		include: true,
+		include: false,
 		theme: (
 			prototype: true
 		)
@@ -48,7 +48,7 @@ $defaultConfig: (
 		)
 	),
 	segment: (
-		include: true,
+		include: false,
 		theme: (
 			prototype: true
 		)
@@ -101,43 +101,50 @@ $defaultConfig: (
 			include: true,
 			widths: true,
 			layout: true,
-			spacing: true
+			spacing: true,
+			sizes: true
 		),
 		lap: (
 			include: true,
 			widths: true,
 			layout: true,
-			spacing: true
+			spacing: true,
+			sizes: true
 		),
 		lap-and-up: (
 			include: true,
 			widths: true,
 			layout: true,
-			spacing: true
+			spacing: true,
+			sizes: true
 		),
 		portable: (
 			include: true,
 			widths: true,
 			layout: true,
-			spacing: true
+			spacing: true,
+			sizes: true
 		),
 		desk: (
 			include: true,
 			widths: true,
 			layout: true,
-			spacing: true
+			spacing: true,
+			sizes: true
 		),
 		desk-wide: (
 			include: false,
 			widths: true,
 			layout: true,
-			spacing: true
+			spacing: true,
+			sizes: true
 		),
 		under-desk-wide: (
 			include: true,
 			widths: true,
 			layout: true,
-			spacing: true
+			spacing: true,
+			sizes: true
 		)
 	),
 	abstractions: (
@@ -210,5 +217,8 @@ $defaultConfig: (
 		theme: (
 			leslietheme: true
 		)
+	),
+	lightbox: (
+		include: true
 	)
 );

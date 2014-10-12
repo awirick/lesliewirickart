@@ -4,11 +4,4 @@ $(function(){
 		evt.preventDefault();
 		$('body').toggleClass('pushed');
 	});
-
-	var gallery = new Masonry( '#gallery', {
-	});
-
-	imagesLoaded('#gallery', function(){
-		gallery.layout();
-	});
 });

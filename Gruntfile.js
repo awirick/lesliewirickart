@@ -47,49 +47,106 @@ module.exports = function( grunt ) {
 							return 'wp plugin install ' + plugin + ' --activate';
 						}).join(' && ');
 				}
-			}
+			},
+			get_grunt_sitemap: {
+        command: 'curl --silent --output sitemap.json http://<%= config.wp.url %>/?show_sitemap'
+      }
 		},
 
 		watch: {
-			reload: {
+			reload_config: {
+				files: ['<%= config.themeDir  %>/assets/stylesheets/*.yml'],
+				tasks: 'compile_config'
+			},
+			reload_css: {
 				files: ['<%= config.themeDir  %>/assets/stylesheets/**/*.scss'],
-				tasks: 'compile'
+				tasks: 'compile_css'
+			},
+			reload_js: {
+				files: [
+					'<%= config.themeDir  %>/assets/javascripts/src/*.js',
+					'<%= config.themeDir  %>/assets/javascripts/*.js',
+					'!<%= config.themeDir  %>/assets/javascripts/scripts.js'
+				],
+				tasks: 'compile_js'
 			}
 		},
+
+		shared_config: {
+      style: {
+        options: {
+          name: "defaultConfig",
+          cssFormat: "dash",
+          useSassMaps: true
+        },
+        src: ['node_modules/**/bagel-*/config.yml', 'node_modules/bagel-*/config.yml', '<%= config.themeDir  %>/assets/stylesheets/config.yml'], // order matters,
+        dest: [
+          "<%= config.themeDir  %>/assets/stylesheets/config.scss"
+        ]
+      }
+    },
 
 		sass: {
-			dev: {
-				files: [{
-					expand: true,
-					cwd: '<%= config.themeDir  %>/assets/stylesheets/scss',
-					src: ['*.scss', '!_*.scss'],
-					dest: '<%= config.themeDir  %>/assets/stylesheets/css',
-					ext: '.css'
-				}]
-			}
-		},
+      options: {
+        loadPath: []
+      },
+      dist: {
+        files : {
+          '<%= config.themeDir  %>/assets/stylesheets/css/style.css': '<%= config.themeDir  %>/assets/stylesheets/init.scss'
+        }
+      }
+    },
 
 		myth: {
-			dev: {
-				files: [{
-					expand: true,
-					cwd: '<%= config.themeDir  %>/assets/stylesheets/css',
-					src: ['*.css'],
-					dest: '<%= config.themeDir  %>/assets/stylesheets/css',
-					ext: '.css'
-				}]
-			}
+      options: {
+        sourcemap: true,
+				features: {
+					fontVariant: false
+				}
+      },
+      dist: {
+        files: [
+          {
+            expand: true,
+            cwd: '<%= config.themeDir  %>/assets/stylesheets/',
+            src: ['**/*.css'],
+            dest: '<%= config.themeDir  %>/assets/stylesheets/'
+          }
+        ]
+      },
 		},
 
 		cssmin: {
 			dist: {
 				expand: true,
-				cwd: '<%= config.distThemeDir  %>/assets/stylesheets/css',
+				cwd: '<%= config.distThemeDir  %>/assets/stylesheets',
 				src: ['*.css', '!*.min.css'],
-				dest: '<%= config.distThemeDir  %>/assets/stylesheets/css',
+				dest: '<%= config.distThemeDir  %>/assets/stylesheets',
 				ext: '.css'
 			}
 		},
+
+		uncss: {
+      dist: {
+        options: {
+          ignore: [/open/, /pushed/, /active/, /focus/, /placeholder/, /mfp/],
+					stylesheets  : ['assets/stylesheets/css/style.css']
+        },
+        files: {
+          '<%= config.distThemeDir  %>/assets/stylesheets/css/style.css': ['<%= config.distThemeDir  %>/*.php']
+        }
+      }
+    },
+
+		penthouse: {
+      home: {
+        width: 1200,
+        height: 900,
+        css: '<%= config.distThemeDir  %>/assets/stylesheets/style.css',
+				url: 'http://goodtwin.dev',
+				outfile: '<%= config.distThemeDir  %>/views/partials/global/criticalcss.twig',
+      }
+    },
 
 		imagemin: {
 			dist: {
@@ -111,7 +168,7 @@ module.exports = function( grunt ) {
 			files: {
 				src: [
 					'<%= config.themeDir  %>/assets/javascripts/*.js',
-					'!<%= config.themeDir  %>/assets/javascripts/modernizr-custom.js',
+					'!<%= config.themeDir  %>/assets/javascripts/scripts.js',
 					'<%= config.themeDir  %>/assets/javascripts/src/*.js'
 				]
 			}
@@ -141,72 +198,79 @@ module.exports = function( grunt ) {
 			}
 		},
 
+		uglify: {
+			options: {
+				preserveComments: 'some'
+			},
+	    dist: {
+	      files: {
+	        '<%= config.distThemeDir  %>/views/partials/global/enhancejs.twig': ['<%= config.distThemeDir  %>/views/partials/global/enhancejs.twig']
+	      }
+	    }
+	  },
+
 		modernizr: {
 			devFile : 'remote',
-			outputFile : '<%= config.themeDir  %>/assets/javascripts/modernizr-custom.js',
-			files : ['<%= config.themeDir  %>/assets/javascripts/src/**/*.js', '<%= config.themeDir  %>/assets/stylesheets/scss/**/*.scss']
+			outputFile : '<%= config.themeDir  %>/views/partials/global/modernizr.twig',
+			extra : {
+        load : false
+      },
+			files : ['<%= config.themeDir  %>/assets/javascripts/src/**/*.js', '<%= config.themeDir  %>/assets/stylesheets/**/*.scss']
 		},
 
 		requirejs: {
-			compile: {
+      dev: {
+        options: {
+          findNestedDependencies: true,
+          baseUrl: '<%= config.themeDir  %>/assets/javascripts/',
+          optimize: 'none',
+          mainConfigFile: '<%= config.themeDir  %>/assets/javascripts/config.js',
+          include: ['main'],
+          out: '<%= config.themeDir  %>/assets/javascripts/scripts.js',
+          onModuleBundleComplete: function (data) {
+            var fs = require('fs'),
+              amdclean = require('amdclean'),
+              outputFile = data.path;
+
+            fs.writeFileSync(outputFile, amdclean.clean({
+              'filePath': outputFile
+            }));
+          }
+        }
+      },
+			dist: {
 				options: {
-					name: 'main',
-					insertRequire: ['main'],
+					findNestedDependencies: true,
 					baseUrl: '<%= config.distThemeDir  %>/assets/javascripts/',
-					mainConfigFile: '<%= config.distThemeDir  %>/assets/javascripts/config.js',
-					rawText: { // For our super clever use-preloaded-jquery thing; otherwise all the things break
-						'jquery': 'define("jquery",function(){return window.jQuery;});'
-					},
-					out: '<%= config.distThemeDir  %>/assets/javascripts/scripts.js',
 					optimize: 'uglify2',
-					uglify2: {
-						beautify: false,
-						mangle: false,
-						compress: {
-							//conditionals: false //however it was compressing these broke window.resize behavior.
-						}
+					mainConfigFile: '<%= config.distThemeDir  %>/assets/javascripts/config.js',
+					include: ['main'],
+					out: '<%= config.distThemeDir  %>/assets/javascripts/scripts.js',
+					onModuleBundleComplete: function (data) {
+						var fs = require('fs'),
+							amdclean = require('amdclean'),
+							outputFile = data.path;
+
+						fs.writeFileSync(outputFile, amdclean.clean({
+							'filePath': outputFile
+						}));
 					}
 				}
 			}
-		},
-
-		uglify: {
-			options: {
-				mangle: false
-			},
-			require: {
-				files: {
-					'<%= config.distThemeDir  %>/assets/javascripts/lib/requirejs/require.min.js': ['<%= config.distThemeDir  %>/assets/javascripts/lib/requirejs/require.js']
-				}
-			},
-			dist: {
-				files: [{
-					expand: true,
-					cwd: '<%= config.distThemeDir  %>/assets/javascripts/',
-					src: ['*.js', 'src/*.js', 'lib/requirejs/require.js'],
-					dest: '<%= config.distThemeDir  %>/assets/javascripts/'
-				}]
-			}
-		},
+    },
 
 		replace: {
 			require: {
-				src: ['<%= config.distThemeDir  %>/templates/base.twig'],
+				src: ['<%= config.distThemeDir  %>/views/partials/global/head.twig'],
 				overwrite: true,
 				replacements: [
 					{
-						from: '<script data-main="{{theme.path}}/assets/javascripts/config" src="{{theme.path}}/assets/javascripts/lib/requirejs/require.js"></script>',
-						to: '<script data-main="{{theme.path}}/assets/javascripts/scripts" src="{{theme.path}}/assets/javascripts/lib/requirejs/require.min.js"></script>'
-					}
-				]
-			},
-			modernizr: {
-				src: ['<%= config.distThemeDir  %>/templates/partials/head.twig'],
-				overwrite: true,
-				replacements: [
+						from: '<!-- scripts.js -->',
+						to: '<meta name="fulljs" content="{{theme.path}}/assets/javascripts/scripts.js">'
+					},
 					{
-						from: 'src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.1/modernizr.min.js"',
-						to: 'src="{{theme.path}}/assets/javascripts/modernizr-custom.js"'
+						from: /(enhance\.loadJS).*?(\))(;)/ig,
+						to: ''
 					}
 				]
 			}
@@ -214,13 +278,15 @@ module.exports = function( grunt ) {
 
 		rsync: {
 			staging: {
+				args: ["--verbose"],
 				src: 'dist/',
 				dest: '/var/www/<%= config.name  %>',
-				host: '',
+				host: 'root@cronut.goodtwin.co',
 				recursive: true,
 				syncDest: true
 			},
 			prod: {
+				args: ["--verbose"],
 				src: 'dist/',
 				dest: '/var/www/<%= config.name  %>',
 				host: '',
@@ -235,9 +301,9 @@ module.exports = function( grunt ) {
 			},
 			local: {
 				title: 'Local',
-				database: '<%= config.db.name  %>_development',
-				user: '<%= config.db.user  %>_user',
-				pass: '',
+				database: '<%= config.wp.db.name  %>',
+				user: '<%= config.wp.db.user  %>',
+				pass: '<%= config.wp.db.pwd  %>',
 				host: 'localhost:/opt/boxen/data/mysql/socket',
 				url: '<%= config.name  %>.<%= config.env.dev  %>'
 			},
@@ -245,33 +311,79 @@ module.exports = function( grunt ) {
 				title: 'Staging',
 				database: '<%= config.name  %>_staging',
 				user: '<%= config.name  %>_stg',
-				pass: '',
+				pass: '<%= config.wp.db.pwd  %>',
 				host: 'localhost',
-				url: '<%= config.name  %>.<%= config.env.staging  %>.cronut.goodtwin.co',
-				ssh_host: ''
+				url: '<%= config.name  %>.<%= config.env.staging  %>',
+				ssh_host: 'root@cronut.goodtwin.co'
 			},
 			prod: {
 				title: 'Production',
 				database: '<%= config.name  %>_prod',
 				user: '<%= config.name  %>_prod',
-				pass: '',
+				pass: '<%= config.wp.db.pwd  %>',
 				host: 'localhost',
-				url: '<%= config.name  %>.goodtwin.co',
+				url: 'goodtwin.co',
 				ssh_host: ''
 			}
+		},
+		'sftp-deploy': {
+		  build: {
+		    auth: {
+		      host: 'ftp.flywheelsites.com',
+		      port: 22,
+		      authKey: 'key1'
+		    },
+		    src: 'dist/wp-content',
+		    dest: '/awirick/goodtwin-co/wp-content',
+		    progress: true
+		  },
+			theme: {
+				auth: {
+					host: 'ftp.flywheelsites.com',
+					port: 22,
+					authKey: 'key1'
+				},
+				src: 'dist/wp-content/themes/goodpress',
+				dest: '/awirick/goodtwin-co/wp-content/themes/goodpress',
+				progress: true
+			}
 		}
-
 	});
 
 	var target = grunt.option('target') || 'staging';
 
 	require('load-grunt-tasks')(grunt);
 
-	grunt.registerTask('init', ['exec:initWordpress', 'exec:initConfig', 'exec:initPlugins']);
-	grunt.registerTask('default', ['compile']);
-	grunt.registerTask('compile', ['sass:dev', 'myth:dev']);
-	grunt.registerTask('pr', ['compile', 'jshint']);
-	grunt.registerTask('build', ['pr', 'clean:dist', 'copy:dist', 'cssmin:dist', 'imagemin:dist', 'modernizr', 'replace:modernizr', 'uglify:dist' ]);
+	grunt.registerTask('bagel:dirs',
+  'used to create an array of bagel paths for use in sass pathing',
+  function(){
+    var loadPaths = grunt.file.expand({}, [
+      './',
+      'app/wp-content/themes/goodpress/assets/stylesheets/',
+			'app/wp-content/themes/goodpress/assets/stylesheets/chrome/',
+      'node_modules/',
+      'node_modules/bagel-*/node_modules/',
+      'node_modules/**/node_modules/bagel-*/node_modules/'
+    ]);
+    grunt.log.write(loadPaths.join(", "));
+    grunt.config.set('sass.options.loadPath', loadPaths);
+
+  });
+
+	grunt.registerTask('load_sitemap_json', function() {
+		var sitemap_urls = grunt.file.readJSON('./sitemap.json');
+		grunt.config.set('uncss.dist.options.urls', sitemap_urls);
+	});
+
+	grunt.registerTask('init', ['exec:initWordpress', 'exec:initConfig', 'exec:installWordpress', 'exec:initPlugins']);
+	grunt.registerTask('default', ['pr']);
+	grunt.registerTask('compile_config', ['shared_config']);
+	grunt.registerTask('compile_css', ['bagel:dirs', 'sass:dist', 'myth:dist']);
+	grunt.registerTask('compile_js', ['jshint', 'requirejs:dev']);
+	grunt.registerTask('pr', ['compile_config', 'compile_css', 'compile_js']);
+	grunt.registerTask('wp_uncss', ['exec:get_grunt_sitemap','load_sitemap_json','uncss:dist']);
+	grunt.registerTask('build', ['compile_config', 'compile_css', 'clean:dist', 'copy:dist', 'imagemin:dist', 'wp_uncss', 'cssmin:dist', 'penthouse:home', 'uglify' ]);
+	grunt.registerTask('prod', ['build', 'sftp-deploy:theme']);
 	// DANGER ZONE: Will push the db also. If that's not what you want, just `rsync:*target*`
 	// `deploy` requires a `--target=""` flag. (staging, prod). Defaults to staging.
 	grunt.registerTask('deploy', ['rsync:'+target, 'db_push']);

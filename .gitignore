@@ -1,4 +1,3 @@
-node_modules
 .DS_Store
 .php-version
 app/wp-admin/
@@ -17,3 +16,9 @@ app/wp-content/themes/goodpress/assets/stylesheets/node_modules
 app/wp-content/themes/goodpress/assets/stylesheets/css
 backups/
 .tmp/
+!app/wp-content/themes/goodpress/style.css
+sitemap.json
+.sass-cache/
+.tmp/
+dist/
+node_modules/

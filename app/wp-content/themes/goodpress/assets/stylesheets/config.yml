@@ -8,5 +8,11 @@ menu:
 grid:
   theme:
     leslietheme: true
+lightbox:
+  include: true
 base:
   desk-wide-start: 1020px
+card:
+  include: false
+segment:
+  include: false

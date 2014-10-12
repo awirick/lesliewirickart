@@ -1,7 +1,7 @@
 {
   "name": "lesliewirickart",
   "themeDir": "app/wp-content/themes/goodpress",
-  "distThemeUrl": "dist/wp-content/themes/goodpress",
+  "distThemeDir": "dist/wp-content/themes/goodpress",
   "wp": {
     "url": "lesliewirickart.dev",
     "title": "LeslieWirickArt",
