@@ -198,17 +198,6 @@ module.exports = function( grunt ) {
 			}
 		},
 
-		uglify: {
-			options: {
-				preserveComments: 'some'
-			},
-	    dist: {
-	      files: {
-	        '<%= config.distThemeDir  %>/views/partials/global/enhancejs.twig': ['<%= config.distThemeDir  %>/views/partials/global/enhancejs.twig']
-	      }
-	    }
-	  },
-
 		modernizr: {
 			devFile : 'remote',
 			outputFile : '<%= config.themeDir  %>/views/partials/global/modernizr.twig',
@@ -259,39 +248,20 @@ module.exports = function( grunt ) {
 			}
     },
 
-		replace: {
-			require: {
-				src: ['<%= config.distThemeDir  %>/views/partials/global/head.twig'],
-				overwrite: true,
-				replacements: [
-					{
-						from: '<!-- scripts.js -->',
-						to: '<meta name="fulljs" content="{{theme.path}}/assets/javascripts/scripts.js">'
-					},
-					{
-						from: /(enhance\.loadJS).*?(\))(;)/ig,
-						to: ''
-					}
-				]
-			}
-		},
-
 		rsync: {
 			staging: {
 				args: ["--verbose"],
 				src: 'dist/',
 				dest: '/var/www/<%= config.name  %>',
 				host: 'root@cronut.goodtwin.co',
-				recursive: true,
-				syncDest: true
+				recursive: true
 			},
 			prod: {
 				args: ["--verbose"],
 				src: 'dist/',
 				dest: '/var/www/<%= config.name  %>',
 				host: '',
-				recursive: true,
-				syncDest: true
+				recursive: true
 			}
 		},
 
@@ -310,7 +280,7 @@ module.exports = function( grunt ) {
 			staging: {
 				title: 'Staging',
 				database: '<%= config.name  %>_staging',
-				user: '<%= config.name  %>_stg',
+				user: '<%= config.wp.db.user  %>',
 				pass: '<%= config.wp.db.pwd  %>',
 				host: 'localhost',
 				url: '<%= config.name  %>.<%= config.env.staging  %>',
@@ -319,33 +289,11 @@ module.exports = function( grunt ) {
 			prod: {
 				title: 'Production',
 				database: '<%= config.name  %>_prod',
-				user: '<%= config.name  %>_prod',
+				user: '<%= config.wp.db.user  %>',
 				pass: '<%= config.wp.db.pwd  %>',
 				host: 'localhost',
 				url: 'goodtwin.co',
 				ssh_host: ''
-			}
-		},
-		'sftp-deploy': {
-		  build: {
-		    auth: {
-		      host: 'ftp.flywheelsites.com',
-		      port: 22,
-		      authKey: 'key1'
-		    },
-		    src: 'dist/wp-content',
-		    dest: '/awirick/goodtwin-co/wp-content',
-		    progress: true
-		  },
-			theme: {
-				auth: {
-					host: 'ftp.flywheelsites.com',
-					port: 22,
-					authKey: 'key1'
-				},
-				src: 'dist/wp-content/themes/goodpress',
-				dest: '/awirick/goodtwin-co/wp-content/themes/goodpress',
-				progress: true
 			}
 		}
 	});
@@ -382,7 +330,7 @@ module.exports = function( grunt ) {
 	grunt.registerTask('compile_js', ['jshint', 'requirejs:dev']);
 	grunt.registerTask('pr', ['compile_config', 'compile_css', 'compile_js']);
 	grunt.registerTask('wp_uncss', ['exec:get_grunt_sitemap','load_sitemap_json','uncss:dist']);
-	grunt.registerTask('build', ['compile_config', 'compile_css', 'clean:dist', 'copy:dist', 'imagemin:dist', 'wp_uncss', 'cssmin:dist', 'penthouse:home', 'uglify' ]);
+	grunt.registerTask('build', ['compile_config', 'compile_css', 'clean:dist', 'copy:dist', 'imagemin:dist', 'cssmin:dist' ]);
 	grunt.registerTask('prod', ['build', 'sftp-deploy:theme']);
 	// DANGER ZONE: Will push the db also. If that's not what you want, just `rsync:*target*`
 	// `deploy` requires a `--target=""` flag. (staging, prod). Defaults to staging.

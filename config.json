@@ -18,13 +18,13 @@
     },
     "db": {
       "user": "lwart_user",
-      "pwd": "ALLTHETHINGS",
-      "name": "lwart_development"
+      "pwd": "alwke12le",
+      "name": "lesliewirickart_development"
     }
   },
   "env": {
     "dev": "dev",
-    "staging": "cronut.goodtwin.com",
+    "staging": "cronut.goodtwin.co",
     "prod": "com"
   }
 }

@@ -19,7 +19,7 @@
     "grunt-contrib-sass": "^0.7.3",
     "grunt-contrib-requirejs": "^0.4.4",
     "grunt-exec": "^0.4.6",
-    "grunt-rsync": "~0.1.1",
+    "grunt-rsync": "~0.6.2",
     "grunt-shared-config": "^0.3.7",
     "grunt-text-replace": "~0.3.6",
     "grunt-deployments": "~0.1.5",

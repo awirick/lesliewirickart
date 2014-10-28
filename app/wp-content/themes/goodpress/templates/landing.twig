@@ -3,7 +3,7 @@
 {% block main %}
 <div class="ui wide gutter pv ph- desk-wide--ph+" clearfix>
   <div class="1/1 desk-wide--5/8 ph+ under-desk-wide--pv palm--ph-" float-left>
-    <img src="http://www.loveonwall.com/fmm_uploads/23779-abstract-art.jpg" alt="leslie wirick abstract art photo" />
+    <img src="{{TimberImage(post.landing_hero).src}}" alt="leslie wirick abstract art photo" />
   </div>
   <div class="1/1 desk-wide--3/8 ph+ under-desk-wide--pv palm--ph-" float-left>
     {{ post.get_field('landing_blurb') }}
