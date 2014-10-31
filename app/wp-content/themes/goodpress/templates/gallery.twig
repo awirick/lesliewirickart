@@ -6,7 +6,7 @@
     {% for post in posts %}
     <div class="palm--1/1 portable--1/2 1/3 ph mb+">
       <a class="gallery-image" href="{{TimberImage(post.get_field('main_photo')).src}}">
-        <img src="{{TimberImage(post.get_field('main_photo')).src|resize(1200)}}" alt="{{post.name}}" />
+        <img src="{{TimberImage(post.get_field('main_photo')).src|resize(600)}}" alt="{{post.name}}" />
     </a>
     </div>
     {% endfor %}

@@ -16,7 +16,6 @@
 
   //php mailer variables
   $to = get_option('admin_email');
-  var_dump($to);
   $subject = "Someone sent a message from ".get_bloginfo('name');
   $headers = 'From: '. $email . "rn" .
     'Reply-To: ' . $email . "rn";

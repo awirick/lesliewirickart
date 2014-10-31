@@ -250,11 +250,12 @@ module.exports = function( grunt ) {
 
 		rsync: {
 			staging: {
-				args: ["--verbose"],
-				src: 'dist/',
-				dest: '/var/www/<%= config.name  %>',
-				host: 'root@cronut.goodtwin.co',
-				recursive: true
+				options: {
+					src: 'dist/',
+					dest: '/var/www/<%= config.name  %>',
+					host: 'root@cronut.goodtwin.co',
+					recursive: true
+				}
 			},
 			prod: {
 				args: ["--verbose"],

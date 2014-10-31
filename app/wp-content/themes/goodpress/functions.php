@@ -11,12 +11,12 @@ Timber::add_route('contact', function($params){
 });
 
 Timber::add_route('gallery', function($params){
-  $query = 'post_type=painting';
+  $query = 'post_type=painting&nopaging=true';
   Timber::load_template('views/pages/gallery.php', $query);
 });
 
 Timber::add_route('galleries/:tag', function($params){
-  $query = 'post_type=painting&tag='.$params['tag'];
+  $query = 'post_type=painting&nopaging=true&tag='.$params['tag'];
   Timber::load_template('views/pages/gallery.php', $query);
 });
 
